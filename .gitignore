@@ -67,3 +67,12 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+settings.json
+main.aux
+main.fdb_latexmk
+main.fls
+main.log
+main.out
+main.toc
+main.synctex.gz

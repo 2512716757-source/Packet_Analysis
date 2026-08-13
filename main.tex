@@ -1,0 +1,250 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{vietnam}
+\usepackage[
+  left=2.5cm,right=2.5cm,
+  top=2.5cm,bottom=2.5cm
+]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\graphicspath{{./}{picture/}}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption} % Đã thêm package này để dùng \captionof cho bảng không bị trôi
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\captionsetup{hypcap=false}
+
+% Cấu hình Hyperref (Chỉ khai báo 1 lần duy nhất)
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue,
+  filecolor=magenta,
+  linktoc=all
+]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlength{\headheight}{30pt}
+
+% Cấu hình Header / Footer
+\fancypagestyle{reportstyle}{%
+  \fancyhf{}
+  \fancyhead[C]{%
+    \begin{minipage}[b]{\textwidth}
+      \small
+      Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM \hfill Mạng máy tính\\[-0.15em]
+      Đồ án Phân tích Gói tin \hfill Báo cáo kỹ thuật
+    \end{minipage}%
+  }
+  \fancyfoot[R]{\small Trang \thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+% -----------------------------------------------------------------
+% TRANG BÌA
+% -----------------------------------------------------------------
+\begin{titlepage}
+  \begin{center}
+
+    {\large ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\par}
+    \vspace{0.2cm}
+    {\large\bfseries TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN\par}
+    {\large KHOA CÔNG NGHỆ THÔNG TIN\par}
+
+    \vspace{1cm}
+    \includegraphics[width=3.5cm]{logo.png}
+
+    \vspace{1cm}
+    \rule{\textwidth}{1pt}
+    \vspace{0.3cm}
+    {\LARGE\bfseries BÁO CÁO KỸ THUẬT ĐỒ ÁN PACKET ANALYSIS\par}
+    \vspace{0.3cm}
+    {\Large Đề tài: \textbf{Wireshark --- FTP \& HTTP Traffic Analysis}\par}
+    \vspace{0.3cm}
+    \rule{\textwidth}{1pt}
+
+    \vspace{0.8cm}
+    {\large \textbf{Môn học:} Mạng máy tính\par}
+
+  \end{center}
+
+  \vspace{1.2cm}
+
+  \begin{minipage}[t]{0.52\textwidth}
+    \textit{\textbf{Sinh viên thực hiện:}}\\
+    Đỗ Đăng Tú (25127167)\\
+    Nguyễn Viết Bách (25127275)\\
+    Lê Xuân (25127175)
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.43\textwidth}
+    \raggedleft{}
+    \textit{\textbf{Giáo viên hướng dẫn:}}\\
+    Cô Chung Thùy Linh
+  \end{minipage}
+
+  \vfill
+
+  \begin{center}
+    \small TP.~Hồ Chí Minh, ngày 13 tháng 8 năm 2026
+  \end{center}
+
+\end{titlepage}
+
+% -----------------------------------------------------------------
+% MỤC LỤC
+% -----------------------------------------------------------------
+\clearpage
+\hypersetup{pageanchor=true}
+\pagestyle{reportstyle}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\tableofcontents
+\clearpage
+
+% =================================================================
+% SECTION 1: PHÂN CÔNG CÔNG VIỆC & ĐÁNH GIÁ ĐÓNG GÓP
+% =================================================================
+\section{Phân công công việc \& Đánh giá đóng góp}
+
+\subsection{Phân công công việc (Task Assignment Matrix)}
+\begin{center}
+  \footnotesize
+  \begin{tabularx}{\textwidth}{@{} c p{3.2cm} p{3.8cm} X @{}}
+    \toprule
+    \textbf{STT} & \textbf{Họ và tên} & \textbf{Hạng mục phụ trách} & \textbf{Mô tả công việc} \\
+    \midrule
+    1 & Nguyễn Viết Bách & \textbf{Part 1: FTP Protocol Analysis} &
+    Thực hiện bắt gói tin FTP trên Public Server (\texttt{ftp.dlptest.com}) và hệ thống Project 01 (2 PCs). Phân tích Thí nghiệm 1--5. So sánh Active vs Passive Mode, đánh giá an toàn thông tin FTP. \\
+    \midrule
+    2 & Đỗ Đăng Tú & \textbf{Part 2A \& 2B: HTTP Socket Client} &
+    Thiết kế ứng dụng Socket thô (\texttt{http\_client.py} / \texttt{http\_client.c}) gửi HTTP GET request đến \texttt{www.google.com:80}. Bắt gói tin HTTP, giải thích mã nguồn và phân tích DNS, TCP Handshake, HTTP Request/Response. \\
+    \midrule
+    3 & Lê Xuân & \textbf{Part 2C: Advanced TCP Analysis} &
+    Phân tích chuyên sâu TCP Segmentation \& Reassembly (MSS, Seq/ACK, Payload), đóng kết nối (FIN/RST), đánh giá HTTP vs HTTPS và tổng hợp báo cáo kỹ thuật LaTeX. \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{0.15cm}
+  \captionof{table}{Bảng phân công công việc (Task Assignment Matrix)}\label{tab:task_assignment}
+\end{center}
+
+\subsection{Tự đánh giá \& Đánh giá thành viên (Self-Assessment \& Peer Evaluation)}
+\begin{center}
+  \footnotesize
+  \begin{tabularx}{\textwidth}{@{} c p{3.2cm} c c X @{}}
+    \toprule
+    \textbf{STT} & \textbf{Họ và tên} & \textbf{Đóng góp} & \textbf{Mức hoàn thành} & \textbf{Ghi chú} \\
+    \midrule
+    1 & Nguyễn Viết Bách & 33\% & 100\% & Phụ trách Part 1 (FTP Traffic Analysis), thực nghiệm trên Public Server \& Project 01 (2 PCs), phân tích Active/Passive mode. \\
+    \midrule
+    2 & Đỗ Đăng Tú & 33\% & 100\% & Phụ trách Part 2A \& 2B (Socket Client Code), bắt gói tin HTTP, phân tích DNS, TCP Handshake, HTTP Request/Response. \\
+    \midrule
+    3 & Lê Xuân & 34\% & 100\% & Phụ trách Part 2C (TCP Segmentation \& Reassembly, Connection Teardown, Reflection), biên tập và tổng hợp báo cáo LaTeX. \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{0.15cm}
+  \captionof{table}{Bảng tự đánh giá và đánh giá thành viên (Self-Assessment \& Peer Evaluation)}\label{tab:peer_evaluation}
+\end{center}
+
+% =================================================================
+% SECTION 2: PART 1 - PHÂN TÍCH GIAO THỨC FTP
+% =================================================================
+\section{PART 1 --- FTP Protocol Analysis (Phân tích giao thức FTP)}
+
+\subsection{Tổng quan \& Môi trường thử nghiệm}
+Giới thiệu tổng quan về giao thức FTP, mô hình thử nghiệm với Public FTP Server (\texttt{ftp.dlptest.com}) và hệ thống FTP Client/Server tự phát triển từ Project 01 chạy trên 2 máy PC riêng biệt.
+
+\subsection{Phân tích phiên 1: Public FTP Test Server (ftp.dlptest.com)}
+  \subsubsection{Thí nghiệm 1: Khởi tạo kết nối FTP (Establish Connection)}
+  Trình bày chi tiết quá trình bắt tay 3 bước TCP (SYN, SYN-ACK, ACK), địa chỉ IP nguồn/đích và số hiệu cổng điều khiển 21.
+
+  \subsubsection{Thí nghiệm 2: Xác thực đăng nhập (Login Authentication)}
+  Phân tích gói tin chứa thông tin tài khoản \texttt{USER} và \texttt{PASS} truyền dạng rõ (cleartext) và thông điệp phản hồi 230 từ Server.
+
+  \subsubsection{Thí nghiệm 3: Xem danh sách thư mục (Directory Listing)}
+  Phân tích lệnh \texttt{LIST}, kênh truyền dữ liệu (Data Channel) và cổng kết nối liên quan.
+
+  \subsubsection{Thí nghiệm 4: Upload File (Upload a File)}
+  Phân tích lệnh \texttt{STOR}, thời gian truyền dữ liệu và phản hồi hoàn tất 226.
+
+  \subsubsection{Thí nghiệm 5: Download File (Download a File)}
+  Phân tích lệnh \texttt{RETR}, dung lượng file, stream TCP chứa dữ liệu và cơ chế Active/Passive Mode.
+
+\subsection{Phân tích phiên 2: Hệ thống FTP Client/Server từ Project 01 (2 PCs)}
+  \subsubsection{Kết quả thực nghiệm trên 2 máy PC thực tế}
+  Trình bày các minh chứng gói tin thu thập được khi chạy phiên FTP giữa 2 máy PC thực tế.
+
+\subsection{Thảo luận \& Đánh giá mở rộng (Discussion \& Analysis)}
+  \subsubsection{So sánh chi tiết Active Mode vs Passive Mode}
+  Phân tích nguyên lý hoạt động của lệnh \texttt{PORT} (Active) và \texttt{PASV} (Passive), sự khác biệt về bên khởi tạo kết nối dữ liệu.
+
+  \subsubsection{Đánh giá an toàn thông tin đối với FTP}
+  Đánh giá rủi ro lộ mật khẩu khi truyền plaintext và đề xuất các giải pháp bảo mật thay thế (FTPS / SFTP).
+
+  \subsubsection{So sánh đối chiếu giữa 2 phiên thực nghiệm (Test Server vs Project 01)}
+  So sánh điểm tương đồng và khác biệt giữa Server thực tế trên Internet và Server tự cài đặt trên mạng nội bộ.
+
+% =================================================================
+% SECTION 3: PART 2 - PHÂN TÍCH GIAO THỨC HTTP
+% =================================================================
+\section{PART 2 --- HTTP Protocol Analysis (Phân tích giao thức HTTP)}
+
+\subsection{Chương trình Socket Client (Part A --- Socket Client Code)}
+  \subsubsection{Mã nguồn chương trình (\texttt{http\_client.py} / \texttt{http\_client.c})}
+  Trình bày đoạn mã nguồn lập trình Socket thô kết nối đến cổng 80 của target host.
+
+  \subsubsection{Giải thích chi tiết các bước xử lý trong Socket Code}
+  Giải thích chi tiết từng lệnh khởi tạo socket, thiết lập kết nối TCP, tạo chuỗi HTTP GET request và đọc dữ liệu response.
+
+\subsection{Bắt gói tin Wireshark (Part B --- Packet Capture)}
+  Trình bày cấu hình capture filter \texttt{tcp port 80} và quá trình lưu file \texttt{lab\_capture.pcapng}.
+
+\subsection{Trả lời các câu hỏi phân tích chi tiết (Part C --- Analysis Questions)}
+
+  \subsubsection{A. Name Resolution \& Addressing (Phân giải tên miền \& Địa chỉ)}
+  Trả lời Câu 1 -- 2 về truy vấn DNS và địa chỉ IP kết nối.
+
+  \subsubsection{B. The TCP Connection (Kết nối TCP)}
+  Trả lời Câu 3 -- 6 về bắt tay 3 bước TCP, Source Port, thông số MSS, Window Size và thời gian RTT.
+
+  \subsubsection{C. The HTTP Request (Yêu cầu HTTP)}
+  Trả lời Câu 7 -- 9 về phương thức HTTP GET, các dòng Header và dung lượng Request.
+
+  \subsubsection{D. The HTTP Response (Phản hồi HTTP)}
+  Trả lời Câu 10 -- 14 về Status Code (301 Redirect), Location header, Response headers và dấu hiệu kết thúc Message Body.
+
+  \subsubsection{E. TCP Segmentation \& Reassembly (Phân đoạn \& Tái hợp dữ liệu TCP)}
+  Trả lời Câu 15 -- 20 về cơ chế phân đoạn TCP theo MSS, Sequence Number, ACK Number và quá trình tái hợp dữ liệu của Wireshark.
+
+  \subsubsection{F. Closing the Connection \& Totals (Đóng kết nối \& Tổng kết dữ liệu)}
+  Trả lời Câu 21 -- 22 về các gói tin FIN/RST ngắt kết nối và so sánh tổng lượng byte gửi/nhận.
+
+  \subsubsection{G. Reflection (Đánh giá \& Nhìn nhận)}
+  Trả lời Câu 23 -- 24 về vấn đề bảo mật của HTTP (Port 80) vs HTTPS (Port 443) và tóm tắt vòng đời đầy đủ của một HTTP Request.
+
+% =================================================================
+% SECTION 4: TỔNG KẾT VÀ DANH MỤC NỘP BÀI
+% =================================================================
+\section{Tổng kết \& Phụ lục}
+\subsection{Tổng kết kết quả hoàn thành}
+Tổng kết mức độ hoàn thành nhiệm vụ của nhóm đối với toàn bộ đồ án.
+
+\subsection{Danh mục các file đính kèm nộp bài (Submission Package)}
+Liệt kê danh sách các file mã nguồn và file bắt gói tin \texttt{.pcapng} nộp kèm báo cáo.
+
+\end{document}
