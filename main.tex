@@ -10,7 +10,7 @@
 ]{geometry}
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{graphicx}
-\graphicspath{{./}{picture/}}
+\graphicspath{{picture/}}
 \usepackage{fancyhdr}
 \usepackage{booktabs}
 \usepackage{listings}
@@ -179,129 +179,129 @@ Trong phần này, nhóm thực hiện bắt và phân tích gói tin của giao
 \end{itemize}
 
 \subsection{Phân tích phiên 1: Public FTP Test Server (ftp.dlptest.com)}
- \subsubsection{Thí nghiệm 1: Khởi tạo kết nối FTP (Establish Connection)}
-  \begin{itemize}
-    \item \textbf{Cổng sử dụng (Ports):} Cổng điều khiển phía Server là \texttt{21}. Cổng nguồn phía Client là \texttt{57690} (được hệ điều hành cấp phát ngẫu nhiên - Ephemeral Port).
-    \item \textbf{Địa chỉ IP của Server:} \texttt{44.241.66.173}.
-    \item \textbf{Gói tin thiết lập kết nối:} Quá trình bắt tay 3 bước TCP (TCP 3-Way Handshake) bắt đầu tại gói tin số \texttt{638} (\texttt{[SYN]}), tiếp theo là gói \texttt{673} (\texttt{[SYN, ACK]}) và hoàn tất tại gói \texttt{674} (\texttt{[ACK]}).
-    \item \textbf{Giao thức xuất hiện trước FTP:} Giao thức \texttt{TCP} ở tầng Transport phải thiết lập kết nối thành công trước khi các lệnh FTP ở tầng Application có thể gửi đi.
-  \end{itemize}
+\subsubsection{Thí nghiệm 1: Khởi tạo kết nối FTP (Establish Connection)}
+\begin{itemize}
+  \item \textbf{Cổng sử dụng (Ports):} Cổng điều khiển phía Server là \texttt{21}. Cổng nguồn phía Client là \texttt{57690} (được hệ điều hành cấp phát ngẫu nhiên - Ephemeral Port).
+  \item \textbf{Địa chỉ IP của Server:} \texttt{44.241.66.173}.
+  \item \textbf{Gói tin thiết lập kết nối:} Quá trình bắt tay 3 bước TCP (TCP 3-Way Handshake) bắt đầu tại gói tin số \texttt{638} (\texttt{[SYN]}), tiếp theo là gói \texttt{673} (\texttt{[SYN, ACK]}) và hoàn tất tại gói \texttt{674} (\texttt{[ACK]}).
+  \item \textbf{Giao thức xuất hiện trước FTP:} Giao thức \texttt{TCP} ở tầng Transport phải thiết lập kết nối thành công trước khi các lệnh FTP ở tầng Application có thể gửi đi.
+\end{itemize}
 
-  \begin{figure}[H]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{picture/exp1.png}
+  \includegraphics[width=0.9\textwidth]{exp1.png}
   \caption{Gói tin bắt tay 3 bước TCP thiết lập kết nối FTP (Thí nghiệm 1)}
   \label{fig:exp1_handshake}
-  \end{figure}
+\end{figure}
 
-  \subsubsection{Thí nghiệm 2: Xác thực đăng nhập (Login Authentication)}
-  \begin{itemize}
-    \item \textbf{Kiểm tra Username \& Password:} Có thể nhìn thấy trực tiếp Username (\texttt{USER dlpuser}) và Password (\texttt{PASS rNrKYTX9g7z3RgJRmxWuGHbeu}) hiển thị dưới dạng văn bản rõ (Cleartext / Plaintext) trong gói tin FTP. Tuy nhiên, trong quá trình đăng nhập sẽ không thể thấy những gì ta gõ vào khi nhập Password, vì Client sẽ gửi trực tiếp gói tin \texttt{PASS} chứa mật khẩu mà không hiển thị trên màn hình.
+\subsubsection{Thí nghiệm 2: Xác thực đăng nhập (Login Authentication)}
+\begin{itemize}
+  \item \textbf{Kiểm tra Username \& Password:} Có thể nhìn thấy trực tiếp Username (\texttt{USER dlpuser}) và Password (\texttt{PASS rNrKYTX9g7z3RgJRmxWuGHbeu}) hiển thị dưới dạng văn bản rõ (Cleartext / Plaintext) trong gói tin FTP. Tuy nhiên, trong quá trình đăng nhập sẽ không thể thấy những gì ta gõ vào khi nhập Password, vì Client sẽ gửi trực tiếp gói tin \texttt{PASS} chứa mật khẩu mà không hiển thị trên màn hình.
     \begin{figure}[H]
       \centering
-      \includegraphics[width=0.9\textwidth]{picture/exp2.1.png}
+      \includegraphics[width=0.9\textwidth]{exp2.1.png}
       \caption{Password không hiển thị trên màn hình khi nhập (Thí nghiệm 2)}
       \label{fig:exp2.1_pass}
-  \end{figure}
-    \item \textbf{Mức độ nguy hiểm:} Do FTP truyền thông tin dạng rõ không mã hóa, kẻ tấn công trên cùng mạng (Eavesdropper) có thể dùng các công cụ bắt gói tin (như Wireshark, Ettercap) để đánh cắp tài khoản đăng nhập (Sniffing Attack).
-    \item \textbf{Mã phản hồi đăng nhập thành công:} Server trả về gói tin chứa mã phản hồi \texttt{230 User logged in, proceed}.
-  \end{itemize}
-  
-  \begin{figure}[H]
+    \end{figure}
+  \item \textbf{Mức độ nguy hiểm:} Do FTP truyền thông tin dạng rõ không mã hóa, kẻ tấn công trên cùng mạng (Eavesdropper) có thể dùng các công cụ bắt gói tin (như Wireshark, Ettercap) để đánh cắp tài khoản đăng nhập (Sniffing Attack).
+  \item \textbf{Mã phản hồi đăng nhập thành công:} Server trả về gói tin chứa mã phản hồi \texttt{230 User logged in, proceed}.
+\end{itemize}
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{picture/exp2.png}
+  \includegraphics[width=0.9\textwidth]{exp2.png}
   \caption{Gói tin xác thực đăng nhập FTP (Thí nghiệm 2)}
   \label{fig:exp2_login}
-  \end{figure}
+\end{figure}
 
-  \subsubsection{Thí nghiệm 3: Xem danh sách thư mục (Directory Listing)}
-  \begin{itemize}
-    \item \textbf{Lệnh yêu cầu danh sách thư mục:} Lệnh thô \texttt{LIST} (tương đương với \texttt{dir} trên CLI) được Client gửi tới Server.
-    \item \textbf{Cổng truyền dữ liệu (Data Port):} Do kết nối hoạt động ở Active Mode (thông qua lệnh PORT 192,168,1,26,202,34), cổng nhận dữ liệu phía Client được tính là:$$Port = (202 \times 256) + 34 = \mathbf{51746}$$ Dữ liệu được truyền giữa cổng 20 phía Server và cổng 51746 phía Client.
-    \item \textbf{Kết nối TCP truyền danh sách:} Là kết nối TCP Data riêng biệt được khởi tạo giữa Client (192\.168\.1\.26\:51746) và Server (44\.241\.66\.173\:20), hoạt động độc lập với kết nối TCP Control (Port 21).
-  \end{itemize}
-  
-  \begin{figure}[H]
+\subsubsection{Thí nghiệm 3: Xem danh sách thư mục (Directory Listing)}
+\begin{itemize}
+  \item \textbf{Lệnh yêu cầu danh sách thư mục:} Lệnh thô \texttt{LIST} (tương đương với \texttt{dir} trên CLI) được Client gửi tới Server.
+  \item \textbf{Cổng truyền dữ liệu (Data Port):} Do kết nối hoạt động ở Active Mode (thông qua lệnh PORT 192.168.1.26.202.34), cổng nhận dữ liệu phía Client được tính là:$$Port = (202 \times 256) + 34 = \mathbf{51746}$$ Dữ liệu được truyền giữa cổng 20 phía Server và cổng 51746 phía Client.
+  \item \textbf{Kết nối TCP truyền danh sách:} Là kết nối TCP Data riêng biệt được khởi tạo giữa Client (192.168.1.26:51746) và Server (44.241.66.173:20), hoạt động độc lập với kết nối TCP Control (Port 21).
+\end{itemize}
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{picture/exp3.png}
+  \includegraphics[width=0.9\textwidth]{exp3.png}
   \caption{Gói tin danh sách thư mục FTP (Thí nghiệm 3)}
   \label{fig:exp3_LIST}
-  \end{figure}
+\end{figure}
 
-  \subsubsection{Thí nghiệm 4: Upload File (Upload a File)}
-  \begin{itemize}
-    \item \textbf{Lệnh Upload file:} Lệnh thô \texttt{STOR "Project2\_wireshark\_2026.pdf"} (tương ứng với lệnh \texttt{put} trên CLI).
-    \item \textbf{Kết nối dữ liệu được dùng:} Kết nối TCP Data channel được mở riêng cho lệnh \texttt{STOR}.
-    \item \textbf{Thời gian truyền (Duration):} Tính bằng hiệu thời gian giữa gói tin khởi tạo kết nối dữ liệu và gói phản hồi \texttt{226 Transfer complete} từ Server.
-  \end{itemize}
+\subsubsection{Thí nghiệm 4: Upload File (Upload a File)}
+\begin{itemize}
+  \item \textbf{Lệnh Upload file:} Lệnh thô \texttt{STOR "Project2\_wireshark\_2026.pdf"} (tương ứng với lệnh \texttt{put} trên CLI).
+  \item \textbf{Kết nối dữ liệu được dùng:} Kết nối TCP Data channel được mở riêng cho lệnh \texttt{STOR}.
+  \item \textbf{Thời gian truyền (Duration):} Tính bằng hiệu thời gian giữa gói tin khởi tạo kết nối dữ liệu và gói phản hồi \texttt{226 Transfer complete} từ Server.
+\end{itemize}
 
-  \begin{figure}[H]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{picture/exp4.png}
+  \includegraphics[width=0.9\textwidth]{exp4.png}
   \caption{Gói tin upload file FTP (Thí nghiệm 4)}
   \label{fig:exp4_STOR}
-  \end{figure}
+\end{figure}
 
-  \subsubsection{Thí nghiệm 5: Download File (Download a File)}
-  \begin{itemize}
-    \item \textbf{Lệnh Download file:} Lệnh thô \texttt{RETR "Project2\_wireshark\_2026.pdf"} (tương ứng với lệnh \texttt{get} trên CLI).
-    \item \textbf{Số gói tin \& Kích thước file:} Tổng số gói tin TCP Data truyền qua mạng và dung lượng file tính theo byte.
-    \item \textbf{TCP Stream chứa file:} Stream TCP riêng biệt tương ứng với kết nối dữ liệu.
-    \item \textbf{Active hay Passive Mode?:} Trong phiên làm việc bằng CMD trên Windows, ứng dụng sử dụng \textbf{Active Mode}. Minh chứng là gói tin lệnh \texttt{PORT} được Client gửi tới Server để yêu cầu Server chủ động kết nối về phía Client.
-  \end{itemize}
+\subsubsection{Thí nghiệm 5: Download File (Download a File)}
+\begin{itemize}
+  \item \textbf{Lệnh Download file:} Lệnh thô \texttt{RETR "Project2\_wireshark\_2026.pdf"} (tương ứng với lệnh \texttt{get} trên CLI).
+  \item \textbf{Số gói tin \& Kích thước file:} Tổng số gói tin TCP Data truyền qua mạng và dung lượng file tính theo byte.
+  \item \textbf{TCP Stream chứa file:} Stream TCP riêng biệt tương ứng với kết nối dữ liệu.
+  \item \textbf{Active hay Passive Mode?:} Trong phiên làm việc bằng CMD trên Windows, ứng dụng sử dụng \textbf{Active Mode}. Minh chứng là gói tin lệnh \texttt{PORT} được Client gửi tới Server để yêu cầu Server chủ động kết nối về phía Client.
+\end{itemize}
 
-  \begin{figure}[H]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{picture/exp5.png}
+  \includegraphics[width=0.9\textwidth]{exp5.png}
   \caption{Gói tin download file FTP (Thí nghiệm 5)}
   \label{fig:exp5_RETR}
-  \end{figure}
+\end{figure}
 
 \subsection{Phân tích phiên 2: Hệ thống FTP Client/Server từ Project 01 (2 PCs)}
-  \subsubsection{Kết quả thực nghiệm trên 2 máy PC thực tế}
-  Trình bày các minh chứng gói tin thu thập được khi chạy phiên FTP giữa 2 máy PC thực tế.
+\subsubsection{Kết quả thực nghiệm trên 2 máy PC thực tế}
+Trình bày các minh chứng gói tin thu thập được khi chạy phiên FTP giữa 2 máy PC thực tế.
 
 \subsection{Thảo luận \& Đánh giá mở rộng (Discussion \& Analysis)}
-  \subsubsection{Phân tích về lệnh và mã phản hổi FTP}
-  \begin{itemize}
-    \item \textbf{Cấu trúc câu lệnh (Client Commands):}
-    \begin{itemize} 
+\subsubsection{Phân tích về lệnh và mã phản hổi FTP}
+\begin{itemize}
+  \item \textbf{Cấu trúc câu lệnh (Client Commands):}
+    \begin{itemize}
       \item FTP là giao thức dạnng văn bản (Text-based/ ASCII).
       \item Mỗi câu lệnh từ Client gửi lên Server có cú pháp: \texttt{<COMMAND> [<parameter>] \textbackslash r \textbackslash n}.
       \item VD: USER dlpuser\texttt{\textbackslash r\textbackslash n}
-\end{itemize}
-    \item \textbf{Cấu trúc mã phản hồi (Server responds):}
-      Mọi phản hồi của FTP Server đều gồm 3 chữ số + thông điệp mô tả:
+    \end{itemize}
+  \item \textbf{Cấu trúc mã phản hồi (Server responds):}
+    Mọi phản hồi của FTP Server đều gồm 3 chữ số + thông điệp mô tả:
     \begin{itemize}
       \item Chữ số đầu tiên (Ý nghĩa trạng thái chung:)
-      \begin{itemize}
-        \item \texttt{1xx} (Positive Preliminary): Đã chấp nhận lệnh, đang mở kết nối dữ liệu (ví dụ: 150 Opening BINARY mode data connection).
-        \item \texttt{2xx} (Positive Completion): Lệnh hoàn thành thành công (ví dụ: 200 Command okay, 230 User logged in, 226 Transfer complete).
-        \item \texttt{3xx} (Positive Intermediate): Lệnh được chấp nhận nhưng cần thêm thông tin (ví dụ: 331 Please specify the password).
-        \item \texttt{4xx} (Transient Negative): Lỗi tạm thời, có thể thử lại sau (ví dụ: 425 Can't open data connection).
-        \item \texttt{5xx} (Permanent Negative): Lỗi vĩnh viễn (ví dụ: 530 Not logged in, 550 File not found).
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{1xx} (Positive Preliminary): Đã chấp nhận lệnh, đang mở kết nối dữ liệu (ví dụ: 150 Opening BINARY mode data connection).
+          \item \texttt{2xx} (Positive Completion): Lệnh hoàn thành thành công (ví dụ: 200 Command okay, 230 User logged in, 226 Transfer complete).
+          \item \texttt{3xx} (Positive Intermediate): Lệnh được chấp nhận nhưng cần thêm thông tin (ví dụ: 331 Please specify the password).
+          \item \texttt{4xx} (Transient Negative): Lỗi tạm thời, có thể thử lại sau (ví dụ: 425 Can't open data connection).
+          \item \texttt{5xx} (Permanent Negative): Lỗi vĩnh viễn (ví dụ: 530 Not logged in, 550 File not found).
+        \end{itemize}
       \item Chữ số thứ hai (Phân loại chức năng):
-      \begin{itemize}
-        \item \texttt{x0x}: Lỗi cú pháp (Syntax).
-        \item \texttt{x1x}: Thông tin hệ thống (Information).
-        \item \texttt{x2x}: Kết nối điều khiển \& dữ liệu (Connections).
-        \item \texttt{x3x}: Xác thực \& Quyền hạn (Authentication).
-        \item \texttt{x5x}: Hệ thống tập tin (File system).
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{x0x}: Lỗi cú pháp (Syntax).
+          \item \texttt{x1x}: Thông tin hệ thống (Information).
+          \item \texttt{x2x}: Kết nối điều khiển \& dữ liệu (Connections).
+          \item \texttt{x3x}: Xác thực \& Quyền hạn (Authentication).
+          \item \texttt{x5x}: Hệ thống tập tin (File system).
+        \end{itemize}
     \end{itemize}
-  \end{itemize}
+\end{itemize}
 
-  \subsubsection{So sánh chi tiết Active Mode vs Passive Mode}
-  \begin{itemize}
-    \item \textbf{Active Mode (chế độ chủ động):} Clien gửi lệnh \textbf{PORT} chứa địa chỉ IP và cổng nguồn của Client tới Server. Server sẽ là bên \textbf{chủ động khởi tạo} kết nối dữ liệu từ cổng 20 đến cổng của Client. Nhược điểm là dễ bị Firewall/Nat bên phía Clinet chặn kết nối đến.
-    \item \textbf{Passive Mode (chế độ thụ động):} Client gửi lệnh \textbf{PASV} tới Server. Server sẽ phản hồi mã \texttt{227}, sau đó \textbf{chủ động mở cổng ngẫu nhiên} và trả về địa chỉ IP + cổng cho Client. Client sẽ là bên \textbf{chủ động khởi tạo} kết nối dữ liệu đến Server. Ưu điểm là dễ dàng vượt qua Firewall/Nat của Client.
-  \end{itemize}
+\subsubsection{So sánh chi tiết Active Mode vs Passive Mode}
+\begin{itemize}
+  \item \textbf{Active Mode (chế độ chủ động):} Clien gửi lệnh \textbf{PORT} chứa địa chỉ IP và cổng nguồn của Client tới Server. Server sẽ là bên \textbf{chủ động khởi tạo} kết nối dữ liệu từ cổng 20 đến cổng của Client. Nhược điểm là dễ bị Firewall/Nat bên phía Clinet chặn kết nối đến.
+  \item \textbf{Passive Mode (chế độ thụ động):} Client gửi lệnh \textbf{PASV} tới Server. Server sẽ phản hồi mã \texttt{227}, sau đó \textbf{chủ động mở cổng ngẫu nhiên} và trả về địa chỉ IP + cổng cho Client. Client sẽ là bên \textbf{chủ động khởi tạo} kết nối dữ liệu đến Server. Ưu điểm là dễ dàng vượt qua Firewall/Nat của Client.
+\end{itemize}
 
-  \subsubsection{Đánh giá an toàn thông tin đối với FTP}
- Giao thức FTP gốc truyền thông tin dạng rõ (plaintext) không mã hóa, do đó dễ bị tấn công đánh cắp thông tin đăng nhập (Sniffing Attack). Để bảo mật hơn, nên sử dụng các giao thức FTP bảo mật như FTPS (FTP over SSL/TLS) hoặc SFTP (SSH File Transfer Protocol) để mã hóa toàn bộ luồng truyền.
-  \subsubsection{So sánh đối chiếu giữa 2 phiên thực nghiệm (Test Server vs Project 01)}
-  So sánh điểm tương đồng và khác biệt giữa Server thực tế trên Internet và Server tự cài đặt trên mạng nội bộ.
+\subsubsection{Đánh giá an toàn thông tin đối với FTP}
+Giao thức FTP gốc truyền thông tin dạng rõ (plaintext) không mã hóa, do đó dễ bị tấn công đánh cắp thông tin đăng nhập (Sniffing Attack). Để bảo mật hơn, nên sử dụng các giao thức FTP bảo mật như FTPS (FTP over SSL/TLS) hoặc SFTP (SSH File Transfer Protocol) để mã hóa toàn bộ luồng truyền.
+\subsubsection{So sánh đối chiếu giữa 2 phiên thực nghiệm (Test Server vs Project 01)}
+So sánh điểm tương đồng và khác biệt giữa Server thực tế trên Internet và Server tự cài đặt trên mạng nội bộ.
 
 % =================================================================
 % SECTION 3: PART 2 - PHÂN TÍCH GIAO THỨC HTTP
@@ -309,37 +309,37 @@ Trong phần này, nhóm thực hiện bắt và phân tích gói tin của giao
 \section{PART 2 --- HTTP Protocol Analysis (Phân tích giao thức HTTP)}
 
 \subsection{Chương trình Socket Client (Part A --- Socket Client Code)}
-  \subsubsection{Mã nguồn chương trình (\texttt{http\_client.py} / \texttt{http\_client.c})}
-  Trình bày đoạn mã nguồn lập trình Socket thô kết nối đến cổng 80 của target host.
+\subsubsection{Mã nguồn chương trình (\texttt{http\_client.py} / \texttt{http\_client.c})}
+Trình bày đoạn mã nguồn lập trình Socket thô kết nối đến cổng 80 của target host.
 
-  \subsubsection{Giải thích chi tiết các bước xử lý trong Socket Code}
-  Giải thích chi tiết từng lệnh khởi tạo socket, thiết lập kết nối TCP, tạo chuỗi HTTP GET request và đọc dữ liệu response.
+\subsubsection{Giải thích chi tiết các bước xử lý trong Socket Code}
+Giải thích chi tiết từng lệnh khởi tạo socket, thiết lập kết nối TCP, tạo chuỗi HTTP GET request và đọc dữ liệu response.
 
 \subsection{Bắt gói tin Wireshark (Part B --- Packet Capture)}
-  Trình bày cấu hình capture filter \texttt{tcp port 80} và quá trình lưu file \texttt{lab\_capture.pcapng}.
+Trình bày cấu hình capture filter \texttt{tcp port 80} và quá trình lưu file \texttt{lab\_capture.pcapng}.
 
 \subsection{Trả lời các câu hỏi phân tích chi tiết (Part C --- Analysis Questions)}
 
-  \subsubsection{A. Name Resolution \& Addressing (Phân giải tên miền \& Địa chỉ)}
-  Trả lời Câu 1 -- 2 về truy vấn DNS và địa chỉ IP kết nối.
+\subsubsection{A. Name Resolution \& Addressing (Phân giải tên miền \& Địa chỉ)}
+Trả lời Câu 1 -- 2 về truy vấn DNS và địa chỉ IP kết nối.
 
-  \subsubsection{B. The TCP Connection (Kết nối TCP)}
-  Trả lời Câu 3 -- 6 về bắt tay 3 bước TCP, Source Port, thông số MSS, Window Size và thời gian RTT.
+\subsubsection{B. The TCP Connection (Kết nối TCP)}
+Trả lời Câu 3 -- 6 về bắt tay 3 bước TCP, Source Port, thông số MSS, Window Size và thời gian RTT.
 
-  \subsubsection{C. The HTTP Request (Yêu cầu HTTP)}
-  Trả lời Câu 7 -- 9 về phương thức HTTP GET, các dòng Header và dung lượng Request.
+\subsubsection{C. The HTTP Request (Yêu cầu HTTP)}
+Trả lời Câu 7 -- 9 về phương thức HTTP GET, các dòng Header và dung lượng Request.
 
-  \subsubsection{D. The HTTP Response (Phản hồi HTTP)}
-  Trả lời Câu 10 -- 14 về Status Code (301 Redirect), Location header, Response headers và dấu hiệu kết thúc Message Body.
+\subsubsection{D. The HTTP Response (Phản hồi HTTP)}
+Trả lời Câu 10 -- 14 về Status Code (301 Redirect), Location header, Response headers và dấu hiệu kết thúc Message Body.
 
-  \subsubsection{E. TCP Segmentation \& Reassembly (Phân đoạn \& Tái hợp dữ liệu TCP)}
-  Trả lời Câu 15 -- 20 về cơ chế phân đoạn TCP theo MSS, Sequence Number, ACK Number và quá trình tái hợp dữ liệu của Wireshark.
+\subsubsection{E. TCP Segmentation \& Reassembly (Phân đoạn \& Tái hợp dữ liệu TCP)}
+Trả lời Câu 15 -- 20 về cơ chế phân đoạn TCP theo MSS, Sequence Number, ACK Number và quá trình tái hợp dữ liệu của Wireshark.
 
-  \subsubsection{F. Closing the Connection \& Totals (Đóng kết nối \& Tổng kết dữ liệu)}
-  Trả lời Câu 21 -- 22 về các gói tin FIN/RST ngắt kết nối và so sánh tổng lượng byte gửi/nhận.
+\subsubsection{F. Closing the Connection \& Totals (Đóng kết nối \& Tổng kết dữ liệu)}
+Trả lời Câu 21 -- 22 về các gói tin FIN/RST ngắt kết nối và so sánh tổng lượng byte gửi/nhận.
 
-  \subsubsection{G. Reflection (Đánh giá \& Nhìn nhận)}
-  Trả lời Câu 23 -- 24 về vấn đề bảo mật của HTTP (Port 80) vs HTTPS (Port 443) và tóm tắt vòng đời đầy đủ của một HTTP Request.
+\subsubsection{G. Reflection (Đánh giá \& Nhìn nhận)}
+Trả lời Câu 23 -- 24 về vấn đề bảo mật của HTTP (Port 80) vs HTTPS (Port 443) và tóm tắt vòng đời đầy đủ của một HTTP Request.
 
 % =================================================================
 % SECTION 4: TỔNG KẾT VÀ DANH MỤC NỘP BÀI
