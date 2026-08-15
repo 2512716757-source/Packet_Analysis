@@ -17,7 +17,7 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{array}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{float}
 \usepackage{caption} % Đã thêm package này để dùng \captionof cho bảng không bị trôi
 \usepackage{longtable}
@@ -25,6 +25,23 @@
 \usepackage{enumitem}
 \usepackage{xurl}
 \captionsetup{hypcap=false}
+
+% Định dạng mã nguồn và câu hỏi cho PART 2
+\definecolor{codebg}{RGB}{242,242,242}
+\lstdefinestyle{pystyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  framerule=0pt,
+  columns=fullflexible,
+  showstringspaces=false,
+  tabsize=4
+}
+\newcommand{\question}[2]{\par\medskip\noindent\textbf{Câu #1.} \textbf{#2}\par\smallskip}
+\newcommand{\answer}[1]{\par #1\par}
+% Đánh số các nhóm A--G trong Part C thành 3.3.1, 3.3.2, ...
+\setcounter{secnumdepth}{3}
 
 % Cấu hình Hyperref (Chỉ khai báo 1 lần duy nhất)
 \usepackage[
@@ -35,6 +52,7 @@
   filecolor=magenta,
   linktoc=all
 ]{hyperref}
+\usepackage{bookmark}
 
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
@@ -148,7 +166,7 @@
   \captionof{table}{Bảng phân công công việc (Task Assignment Matrix)}\label{tab:task_assignment}
 \end{center}
 
-\subsection{Tự đánh giá \& Đánh giá thành viên (Self-Assessment \& Peer Evaluation)}
+\subsection{Đánh giá thành viên (Peer Evaluation)}
 \begin{center}
   \footnotesize
   \begin{tabularx}{\textwidth}{@{} c p{3.2cm} c c X @{}}
@@ -196,7 +214,7 @@ Trong phần này, nhóm thực hiện bắt và phân tích gói tin của giao
 
 \subsubsection{Thí nghiệm 2: Xác thực đăng nhập (Login Authentication)}
 \begin{itemize}
-  \item \textbf{Kiểm tra Username \& Password:} Có thể nhìn thấy trực tiếp Username (\texttt{USER dlpuser}) và Password (\texttt{PASS rNrKYTX9g7z3RgJRmxWuGHbeu}) hiển thị dưới dạng văn bản rõ (Cleartext / Plaintext) trong gói tin FTP. Tuy nhiên, trong quá trình đăng nhập sẽ không thể thấy những gì ta gõ vào khi nhập Password, vì Client sẽ gửi trực tiếp gói tin \texttt{PASS} chứa mật khẩu mà không hiển thị trên màn hình.
+  \item \textbf{Kiểm tra Username \& Password:} Có thể nhìn thấy trực tiếp Username (\texttt{USER dlpuser}) và Password (\url{PASS rNrKYTX9g7z3RgJRmxWuGHbeu}) hiển thị dưới dạng văn bản rõ (Cleartext / Plaintext) trong gói tin FTP. Tuy nhiên, trong quá trình đăng nhập sẽ không thể thấy những gì ta gõ vào khi nhập Password, vì Client sẽ gửi trực tiếp gói tin \texttt{PASS} chứa mật khẩu mà không hiển thị trên màn hình.
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.9\textwidth]{exp2.1.png}
@@ -217,7 +235,7 @@ Trong phần này, nhóm thực hiện bắt và phân tích gói tin của giao
 \subsubsection{Thí nghiệm 3: Xem danh sách thư mục (Directory Listing)}
 \begin{itemize}
   \item \textbf{Lệnh yêu cầu danh sách thư mục:} Lệnh thô \texttt{LIST} (tương đương với \texttt{dir} trên CLI) được Client gửi tới Server.
-  \item \textbf{Cổng truyền dữ liệu (Data Port):} Do kết nối hoạt động ở Active Mode (thông qua lệnh PORT 192.168.1.26.202.34), cổng nhận dữ liệu phía Client được tính là:$$Port = (202 \times 256) + 34 = \mathbf{51746}$$ Dữ liệu được truyền giữa cổng 20 phía Server và cổng 51746 phía Client.
+  \item \textbf{Cổng truyền dữ liệu (Data Port):} Do kết nối hoạt động ở Active Mode (thông qua lệnh PORT 192,168,1,26,202,34), cổng nhận dữ liệu phía Client được tính là:$$Port = (202 \times 256) + 34 = \mathbf{51746}$$ Dữ liệu được truyền giữa cổng 20 phía Server và cổng 51746 phía Client.
   \item \textbf{Kết nối TCP truyền danh sách:} Là kết nối TCP Data riêng biệt được khởi tạo giữa Client (192.168.1.26:51746) và Server (44.241.66.173:20), hoạt động độc lập với kết nối TCP Control (Port 21).
 \end{itemize}
 
@@ -261,6 +279,9 @@ Trong phần này, nhóm thực hiện bắt và phân tích gói tin của giao
 \subsubsection{Kết quả thực nghiệm trên 2 máy PC thực tế}
 Trình bày các minh chứng gói tin thu thập được khi chạy phiên FTP giữa 2 máy PC thực tế.
 
+\subsubsection{So sánh đối chiếu giữa 2 phiên thực nghiệm (Test Server vs Project 01)}
+So sánh điểm tương đồng và khác biệt giữa Server thực tế trên Internet và Server tự cài đặt trên mạng nội bộ.
+
 \subsection{Thảo luận \& Đánh giá mở rộng (Discussion \& Analysis)}
 \subsubsection{Phân tích về lệnh và mã phản hổi FTP}
 \begin{itemize}
@@ -300,55 +321,334 @@ Trình bày các minh chứng gói tin thu thập được khi chạy phiên FTP
 
 \subsubsection{Đánh giá an toàn thông tin đối với FTP}
 Giao thức FTP gốc truyền thông tin dạng rõ (plaintext) không mã hóa, do đó dễ bị tấn công đánh cắp thông tin đăng nhập (Sniffing Attack). Để bảo mật hơn, nên sử dụng các giao thức FTP bảo mật như FTPS (FTP over SSL/TLS) hoặc SFTP (SSH File Transfer Protocol) để mã hóa toàn bộ luồng truyền.
-\subsubsection{So sánh đối chiếu giữa 2 phiên thực nghiệm (Test Server vs Project 01)}
-So sánh điểm tương đồng và khác biệt giữa Server thực tế trên Internet và Server tự cài đặt trên mạng nội bộ.
 
 % =================================================================
 % SECTION 3: PART 2 - PHÂN TÍCH GIAO THỨC HTTP
 % =================================================================
 \section{PART 2 --- HTTP Protocol Analysis (Phân tích giao thức HTTP)}
 
-\subsection{Chương trình Socket Client (Part A --- Socket Client Code)}
-\subsubsection{Mã nguồn chương trình (\texttt{http\_client.py} / \texttt{http\_client.c})}
-Trình bày đoạn mã nguồn lập trình Socket thô kết nối đến cổng 80 của target host.
+\subsection{Part A --- Socket Client (Python)}
+File: \texttt{http\_client.py}
 
-\subsubsection{Giải thích chi tiết các bước xử lý trong Socket Code}
-Giải thích chi tiết từng lệnh khởi tạo socket, thiết lập kết nối TCP, tạo chuỗi HTTP GET request và đọc dữ liệu response.
+\begin{lstlisting}[style=pystyle,language=Python]
+import socket
 
-\subsection{Bắt gói tin Wireshark (Part B --- Packet Capture)}
-Trình bày cấu hình capture filter \texttt{tcp port 80} và quá trình lưu file \texttt{lab\_capture.pcapng}.
+host = "www.google.com"
+port = 80
 
-\subsection{Trả lời các câu hỏi phân tích chi tiết (Part C --- Analysis Questions)}
+# Create a TCP socket over IPv4 and connect to the web server
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((host, port))
 
-\subsubsection{A. Name Resolution \& Addressing (Phân giải tên miền \& Địa chỉ)}
+# Build and send a minimal HTTP/1.1 GET request
+request = (
+    "GET / HTTP/1.1\r\n"
+    "Host: www.google.com\r\n"
+    "User-Agent: SocketLab/1.0\r\n"
+    "Connection: close\r\n"
+    "\r\n"
+)
+s.sendall(request.encode())
+
+# Read the response until the server closes the connection
+response = b""
+while True:
+    chunk = s.recv(4096)
+    if not chunk:
+        break
+    response += chunk
+
+print(response.decode(errors="replace"))
+s.close()
+\end{lstlisting}
+
+\subsection{Part B --- Packet Capture}
+Wireshark được cấu hình với capture filter \texttt{tcp port 80}. Sau khi chạy chương trình, phiên HTTP được lưu trong file \texttt{lab\_capture2.pcapng}; client \texttt{192.168.1.6:55319} kết nối tới server \texttt{142.251.155.119:80}.
+
+\subsection{Part C --- Analysis Questions}
+
+\subsubsection{Name Resolution \& Addressing (Phân giải tên miền \& Địa chỉ)}
 Trả lời Câu 1 -- 2 về truy vấn DNS và địa chỉ IP kết nối.
 
-\subsubsection{B. The TCP Connection (Kết nối TCP)}
+\question{1}{Was a DNS query made before the connection? If so, what name was requested and what IP address(es) did the DNS response return?}
+\answer{Không có gói DNS nào xuất hiện trong file bắt gói. Nguyên nhân là Wireshark được cấu hình với capture filter \texttt{tcp port 80}, nên chỉ lưu các gói TCP sử dụng cổng 80; lưu lượng DNS thông thường qua UDP cổng 53 đã bị loại bỏ trước khi ghi. Vì vậy, không thể dựa vào file này để xác định máy đã gửi một truy vấn DNS mới hay sử dụng kết quả được lưu trong bộ nhớ đệm. Tuy nhiên, tại thời điểm \texttt{connect()} được thực hiện, tên miền \texttt{www.google.com} đã được phân giải thành địa chỉ \texttt{142.251.155.119}, thể hiện qua địa chỉ IP đích của gói SYN đầu tiên.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/no_dns.png}
+  \caption{Display filter \texttt{dns} không trả về kết quả vì capture filter \texttt{tcp port 80} đã loại bỏ lưu lượng DNS khỏi file bắt gói.}
+\end{figure}
+
+\question{2}{What is the destination IP address your client actually connected to? What is your own (source) IP address?}
+\begin{itemize}[nosep]
+  \item Địa chỉ IP đích (server): \texttt{142.251.155.119}
+  \item Địa chỉ IP nguồn (client): \texttt{192.168.1.6}
+\end{itemize}
+
+\subsubsection{ The TCP Connection (Kết nối TCP)}
 Trả lời Câu 3 -- 6 về bắt tay 3 bước TCP, Source Port, thông số MSS, Window Size và thời gian RTT.
 
-\subsubsection{C. The HTTP Request (Yêu cầu HTTP)}
+\question{3}{Find the three-way handshake. Give the packet numbers of the SYN, SYN-ACK, and ACK packets.}
+\begin{itemize}[nosep]
+  \item SYN: Packet 1 (192.168.1.6 $\to$ 142.251.155.119)
+  \item SYN, ACK: Packet 2 (142.251.155.119 $\to$ 192.168.1.6)
+  \item ACK: Packet 3 (192.168.1.6 $\to$ 142.251.155.119) --- hoàn tất bắt tay 3 bước
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/syn==1.png}
+  \caption{Filter \texttt{tcp.flags.syn==1}: gói SYN (packet 1) và SYN-ACK (packet 2).}
+\end{figure}
+
+\question{4}{What source (client) TCP port did your program use? Which range does this fall into, and why is it not a fixed number like 80?}
+\answer{Client sử dụng port nguồn \texttt{55319}, thuộc dải ephemeral port (cổng tạm, thường 49152--65535). Port 80 là well-known port cố định của dịch vụ HTTP để server luôn đứng ở đó cho mọi client biết chỗ kết nối tới. Ngược lại, client không cần cổng cố định vì không ai chủ động kết nối tới client --- hệ điều hành tự cấp phát ngẫu nhiên 1 port tạm cho mỗi kết nối mới, giúp phân biệt được nhiều kết nối đồng thời (ví dụ mở nhiều tab trình duyệt tới cùng 1 server) dựa trên bộ 4 giá trị (source IP, source port, dest IP, dest port).}
+
+\question{5}{Look at the SYN and SYN-ACK packets. What Maximum Segment Size (MSS) and initial Window Size were advertised by each side?}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \rowcolor{blue!10} & \textbf{Client (packet 1)} \\
+    \midrule
+    MSS & 1460 bytes \\
+    Window Size & 65535 \\
+    Window Scale & 8 (multiply by 256) \\
+    \bottomrule
+  \end{tabular}
+  \hspace{1cm}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \rowcolor{blue!10} & \textbf{Server (packet 2)} \\
+    \midrule
+    MSS & 1412 bytes \\
+    Window Size & 65535 \\
+    Window Scale & 8 (multiply by 256) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textit{Ghi chú: MSS server nhỏ hơn client (1412 so với 1460), thường do lớp mạng phía server đi qua thêm encapsulation làm giảm MTU khả dụng.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet1.png}
+  \caption{Packet 1 (SYN): chi tiết TCP Options --- Flags: 0x002 (SYN), MSS=1460, Window scale=8 ($\times$256).}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet2.png}
+  \caption{Packet 2 (SYN, ACK): chi tiết TCP Options --- Flags: 0x012 (SYN, ACK), MSS=1412, Window scale=8 ($\times$256).}
+\end{figure}
+
+\question{6}{Using the timestamps, estimate the round-trip time (RTT): how long between your SYN and the server's SYN-ACK?}
+\answer{Packet 1 (SYN): $t = 0.000000000$ s. Packet 2 (SYN-ACK): $t = 0.036859600$ s. RTT $= 0.036859600 - 0.000000000 \approx 36.86$ ms.}
+
+\subsubsection{ The HTTP Request (Yêu cầu HTTP)}
 Trả lời Câu 7 -- 9 về phương thức HTTP GET, các dòng Header và dung lượng Request.
 
-\subsubsection{D. The HTTP Response (Phản hồi HTTP)}
+\question{7}{What HTTP method and version did your request use? Copy the exact request line.}
+\answer{Method: \texttt{GET} --- Version: \texttt{HTTP/1.1}. Request line: \texttt{"GET / HTTP/1.1"} (packet 4).}
+
+\question{8}{List every HTTP header your client sent. Why is the Host header required in HTTP/1.1?}
+\begin{itemize}[nosep]
+  \item \texttt{Host: www.google.com}
+  \item \texttt{User-Agent: SocketLab/1.0}
+  \item \texttt{Connection: close}
+\end{itemize}
+\answer{Host bắt buộc trong HTTP/1.1 vì một địa chỉ IP có thể phục vụ nhiều tên miền khác nhau trên cùng 1 server vật lý (virtual hosting) --- server cần biết chính xác client đang yêu cầu domain nào để trả về đúng nội dung tương ứng.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet4.png}
+  \caption{Packet 4, phần Hypertext Transfer Protocol dạng cây: đầy đủ request line và 3 header (Host, User-Agent, Connection).}
+\end{figure}
+
+\question{9}{Roughly how many bytes was your request? Was it carried in one TCP segment or more?}
+\answer{TCP payload của request = 86 bytes (Len: 86 trong packet 4). Toàn bộ request nằm gọn trong 1 segment duy nhất (packet 4) vì kích thước nhỏ hơn rất nhiều so với MSS (1460 bytes).}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/request.png}
+  \caption{Filter \texttt{http.request}: packet 4 chứa toàn bộ GET request, Len=86.}
+\end{figure}
+
+\subsubsection{ The HTTP Response (Phản hồi HTTP)}
 Trả lời Câu 10 -- 14 về Status Code (301 Redirect), Location header, Response headers và dấu hiệu kết thúc Message Body.
 
-\subsubsection{E. TCP Segmentation \& Reassembly (Phân đoạn \& Tái hợp dữ liệu TCP)}
+\question{10}{What HTTP status code and reason phrase did the server return? What does that code mean?}
+\answer{\texttt{HTTP/1.1 200 OK} --- request được xử lý thành công, server trả về nội dung được yêu cầu (không có redirect, không có lỗi).}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/response.png}
+  \caption{Filter \texttt{http.response}: packet 53, HTTP/1.1 200 OK (text/html), kèm thông tin reassembly và chunked encoding.}
+\end{figure}
+
+\question{11}{If you received a redirect, what URL is given in the Location header? Where is the server trying to send you?}
+\answer{Không áp dụng --- response nhận được là 200 OK, không phải redirect nên không có header Location.}
+
+\question{12}{Identify three response headers (e.g. Server, Content-Type, Content-Length or Transfer-Encoding, Date) and explain what each one tells the client.}
+\begin{itemize}[nosep]
+  \item \texttt{Content-Type: text/html; charset=ISO-8859-1} --- cho biết định dạng dữ liệu trong body là HTML, mã hóa ký tự ISO-8859-1, để trình duyệt/client hiển thị đúng.
+  \item \texttt{Server: gws} --- tên phần mềm/máy chủ web đang phục vụ request (Google Web Server).
+  \item \texttt{Date: Thu, 13 Aug 2026 13:37:03 GMT} --- thời điểm server tạo ra response, dùng để đồng bộ với các header cache khác.
+  \item \texttt{Cache-Control: private, max-age=0} --- chỉ dẫn cách cache nội dung: không cache công khai (private), phải kiểm tra lại ngay (max-age=0).
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet53chunk.png}
+  \caption{Packet 53, toàn bộ header response dạng cây: Content-Type, Date, Server, Set-Cookie, Transfer-Encoding: chunked, và chi tiết 4 data chunk.}
+\end{figure}
+
+\question{13}{Did the response include a message body? If so, what was in it (roughly)?}
+\answer{Có. Sau khi de-chunk (loại bỏ marker của chunked encoding), body có kích thước 84288 bytes, gồm 149 dòng text/html --- là nội dung trang HTML kèm mã JavaScript của Google (quan sát được các chuỗi như "client", "heirloom-hp", "host", "google.com" trong dữ liệu hex).}
+
+\question{14}{How does the response signal where the body ends: a Content-Length header, Transfer-Encoding: chunked, or by closing the connection? If it is chunked, note that there is no Content-Length --- explain how the client knows the body is finished instead.}
+\answer{Response sử dụng \texttt{Transfer-Encoding: chunked} (header thấy rõ tại packet 53) --- bằng chứng trực tiếp là dòng "Hypertext Transfer Protocol, has 4 chunks (including last chunk)". Vì dùng chunked nên không có header Content-Length. Cụ thể 4 chunk gồm: chunk 1 = 32768 octets, chunk 2 = 32768 octets, chunk 3 = 18752 octets, và chunk cuối cùng "End of chunked encoding" có kích thước 0 để báo hiệu kết thúc (32768+32768+18752 = 84288 bytes, khớp đúng với File Data đã hiển thị). Client biết body đã kết thúc ngay khi đọc được chunk-size = 0 (chuỗi "0\textbackslash r\textbackslash n\textbackslash r\textbackslash n"), không cần biết trước tổng kích thước body.}
+
+\subsubsection{ TCP Segmentation \& Reassembly (Phân đoạn \& Tái hợp dữ liệu TCP)}
 Trả lời Câu 15 -- 20 về cơ chế phân đoạn TCP theo MSS, Sequence Number, ACK Number và quá trình tái hợp dữ liệu của Wireshark.
 
-\subsubsection{F. Closing the Connection \& Totals (Đóng kết nối \& Tổng kết dữ liệu)}
+\question{15}{Why does the server's response arrive in several TCP packets instead of just one? Relate your answer to the MSS value seen in the handshake.}
+\answer{Tổng kích thước response đã reassembled là 85645 bytes, lớn hơn rất nhiều so với MSS = 1412 bytes mà server đã thỏa thuận lúc handshake (Câu 5). TCP bắt buộc phải chia dữ liệu thành nhiều segment, mỗi segment không vượt quá MSS, nên response phải được gửi qua nhiều gói tin liên tiếp.}
+
+\question{16}{How many packets are labelled "[TCP segment of a reassembled PDU]" for the response? List their packet numbers.}
+\answer{Tổng cộng 25 segment (tính cả segment cuối chứa header HTTP hoàn chỉnh, packet 53), tổng 85645 bytes --- khớp với dòng "[25 Reassembled TCP Segments (85645 bytes)]" hiển thị tại packet 53:}
+
+\begin{longtable}{@{}cccc@{}}
+  \toprule
+  \rowcolor{blue!10} \textbf{\#} & \textbf{Packet} & \textbf{Payload range} & \textbf{Length (bytes)} \\
+  \midrule
+  \endhead
+  1  & 6  & 0--14119    & 14120 \\
+  2  & 8  & 14120--19767 & 5648 \\
+  3  & 10 & 19768--22591 & 2824 \\
+  4  & 12 & 22592--25415 & 2824 \\
+  5  & 14 & 25416--28239 & 2824 \\
+  6  & 16 & 28240--31063 & 2824 \\
+  7  & 18 & 31064--33887 & 2824 \\
+  8  & 20 & 33888--36711 & 2824 \\
+  9  & 22 & 36712--39535 & 2824 \\
+  10 & 24 & 39536--42359 & 2824 \\
+  11 & 26 & 42360--48007 & 5648 \\
+  12 & 28 & 48008--52243 & 4236 \\
+  13 & 30 & 52244--55067 & 2824 \\
+  14 & 32 & 55068--59303 & 4236 \\
+  15 & 34 & 59304--62127 & 2824 \\
+  16 & 36 & 62128--64951 & 2824 \\
+  17 & 38 & 64952--67775 & 2824 \\
+  18 & 40 & 67776--70599 & 2824 \\
+  19 & 42 & 70600--72011 & 1412 \\
+  20 & 43 & 72012--73423 & 1412 \\
+  21 & 45 & 73424--76247 & 2824 \\
+  22 & 47 & 76248--79071 & 2824 \\
+  23 & 49 & 79072--81895 & 2824 \\
+  24 & 51 & 81896--84719 & 2824 \\
+  25 & 53 & 84720--85644 & 925 \\
+  \bottomrule
+  \caption{Danh sách đầy đủ 25 TCP segment của response.}
+\end{longtable}
+
+\textit{Ghi chú: phần lớn segment có kích thước 2824 bytes ($\approx$ 2$\times$MSS, do offload/gộp gói của card mạng), riêng segment \#19--20 (packet 42, 43) có kích thước đúng 1 MSS (1412 bytes).}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet53segment.png}
+  \caption{Packet 53 mở rộng: danh sách đầy đủ 25 Reassembled TCP Segments.}
+\end{figure}
+
+\question{17}{On which packet does Wireshark display the complete, reassembled HTTP response, and how is that packet labelled (e.g. "[N Reassembled TCP Segments]")?}
+\answer{Packet 53 hiển thị response HTTP đầy đủ đã ghép lại, được đánh nhãn "[25 Reassembled TCP Segments (85645 bytes)]".}
+
+\question{18}{Pick two consecutive segments of the response. Write down each one's Sequence number and payload length, and show that the second segment's sequence number equals the first segment's sequence number plus its payload length.}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \rowcolor{blue!10} \textbf{Segment} & \textbf{Seq / Length} \\
+    \midrule
+    \#6 --- Packet 6 & Seq = 1, Len = 14120 \\
+    \#8 --- Packet 8 & Seq = 14121, Len = 5648 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{Chứng minh:} Seq(\#8) $=$ Seq(\#6) $+$ Len(\#6) $= 1 + 14120 = 14121$ --- khớp chính xác với giá trị Seq thực tế quan sát được tại packet 8.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet6.png}
+  \caption{Packet 6: Seq=1, Len=14120.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet8.png}
+  \caption{Packet 8: Seq=14121, Len=5648.}
+\end{figure}
+
+\question{19}{How many ACK packets did your client send back for the response data? What does the Acknowledgment number in an ACK tell the server?}
+\answer{Tổng cộng 26 gói ACK từ client tới server (filter: \texttt{tcp.flags.ack==1 and tcp.len==0 and ip.src==192.168.1.6 and ip.dst==142.251.155.119}), trong đó 1 ACK thuộc bắt tay 3 bước (packet 3), 24 ACK xác nhận dữ liệu response (packet 7$\to$52, ứng với 24/25 segment --- segment cuối \#25 tại packet 53 được gộp cùng FIN nên ACK của nó là packet 54), và 1 ACK cho FIN của server (packet 54). Ý nghĩa: Acknowledgment number cho server biết byte tiếp theo mà client đang chờ nhận --- tức client đã nhận đủ, liên tục các byte tính đến số đó. Đây là cơ chế cốt lõi giúp TCP đảm bảo tin cậy: nếu 1 segment bị mất, ACK sẽ không tăng lên, server phát hiện và gửi lại đúng phần bị thiếu.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/situation_and_ip.png}
+  \caption{Filter đếm ACK: Displayed 26 (46.4\%) trên tổng 56 gói.}
+\end{figure}
+
+\question{20}{Expand the "Reassembled TCP Segments" tree on the final packet. What total reassembled length does it report? If the response has a Content-Length header, compare the two. If it used Transfer-Encoding: chunked instead, note that there is no Content-Length and that the reassembled bytes include the chunk-size markers.}
+\begin{itemize}[nosep]
+  \item Reassembled TCP total (packet 53): 85645 bytes
+  \item De-chunked entity body (sau khi bỏ chunk-size markers): 84288 bytes
+\end{itemize}
+\answer{Không có Content-Length để so sánh vì response dùng chunked encoding. Chênh lệch $85645 - 84288 = 1357$ bytes chính là phần overhead của các chunk-size marker và CRLF mà chunked encoding thêm vào, đã được loại bỏ khi Wireshark de-chunk.}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{anh/screenshots/packet53.png}
+  \caption{Packet 53: tab "Packet (979 bytes)", "Reassembled TCP (85645 bytes)", "De-chunked entity body (84288 bytes)".}
+\end{figure}
+
+\clearpage
+\subsubsection{ Closing the Connection \& Totals (Đóng kết nối \& Tổng kết dữ liệu)}
 Trả lời Câu 21 -- 22 về các gói tin FIN/RST ngắt kết nối và so sánh tổng lượng byte gửi/nhận.
 
-\subsubsection{G. Reflection (Đánh giá \& Nhìn nhận)}
+\question{21}{How was the connection closed? Find the FIN (or RST) packets and give their packet numbers. Which side closed first, and why (hint: look at the Connection header)?}
+\begin{itemize}[nosep]
+  \item Packet 53: server gửi FIN kèm theo đoạn dữ liệu cuối cùng (Seq=84721, Ack=87, Len=925) --- server chủ động đóng trước.
+  \item Packet 55: client phản hồi FIN, ACK (Seq=87, Ack=85647).
+\end{itemize}
+\answer{Server là bên đóng kết nối trước, đúng như kỳ vọng vì request đã gửi header \texttt{Connection: close} --- server hiểu ngay sau khi gửi hết response thì không cần giữ kết nối, nên đóng luôn (gộp cờ FIN vào gói dữ liệu cuối cùng để tiết kiệm 1 round-trip).}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{anh/screenshots/fin53.png}
+  \caption{Filter \texttt{tcp.flags.fin==1}: packet 53 (server, FIN gộp với data) và packet 55 (client, FIN ACK).}
+\end{figure}
+\vspace{-0.8em}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{anh/screenshots/fin55.png}
+  \caption{Chi tiết packet 55: client gửi FIN, ACK (Seq=87, Ack=85647) để hoàn tất đóng kết nối.}
+\end{figure}
+
+\question{22}{Compare the total bytes your client SENT versus the total bytes it RECEIVED. Which is larger, and does that make sense for a GET request?}
+\begin{itemize}[nosep]
+  \item Gửi (request): 86 bytes
+  \item Nhận (response, đã reassembled): 85645 bytes
+\end{itemize}
+\answer{Lượng nhận lớn hơn rất nhiều so với lượng gửi --- hoàn toàn hợp lý với một GET request, vì client chỉ cần gửi 1 dòng yêu cầu ngắn gọn, trong khi server phải trả về toàn bộ nội dung trang HTML.}
+
+\subsubsection{ Reflection (Đánh giá \& Nhìn nhận)}
 Trả lời Câu 23 -- 24 về vấn đề bảo mật của HTTP (Port 80) vs HTTPS (Port 443) và tóm tắt vòng đời đầy đủ của một HTTP Request.
 
-% =================================================================
-% SECTION 4: TỔNG KẾT VÀ DANH MỤC NỘP BÀI
-% =================================================================
-\section{Tổng kết \& Phụ lục}
-\subsection{Tổng kết kết quả hoàn thành}
-Tổng kết mức độ hoàn thành nhiệm vụ của nhóm đối với toàn bộ đồ án.
+\question{23}{Wireshark could read your entire HTTP request and response as plain text. What does this tell you about the security of port-80 HTTP, and how does HTTPS (port 443) change what an eavesdropper can see?}
+\answer{Việc Follow TCP Stream cho thấy toàn bộ request và response dưới dạng văn bản thuần (plain text) chứng minh rằng HTTP trên port 80 hoàn toàn không mã hóa: bất kỳ ai có khả năng quan sát traffic trên đường truyền (on-path, ví dụ Wi-Fi công cộng, router trung gian) đều có thể đọc được toàn bộ nội dung, kể cả nếu có dữ liệu nhạy cảm trong header hay body. HTTPS (port 443) sử dụng TLS để mã hóa toàn bộ payload --- người quan sát bên ngoài chỉ thấy được rằng có 1 kết nối TLS đang diễn ra (và tên miền qua SNI), nhưng không thể đọc được nội dung request/response thực tế bên trong.}
 
-\subsection{Danh mục các file đính kèm nộp bài (Submission Package)}
-Liệt kê danh sách các file mã nguồn và file bắt gói tin \texttt{.pcapng} nộp kèm báo cáo.
+\question{24}{In one short paragraph, describe the complete lifecycle of your request in order: DNS $\to$ handshake $\to$ request $\to$ response $\to$ close.}
+\answer{Đầu tiên, hệ điều hành phân giải tên miền \texttt{www.google.com} thành địa chỉ IP \texttt{142.251.155.119} qua DNS (không xuất hiện trong capture do capture filter, nhưng là bước bắt buộc trước \texttt{connect()}). Tiếp theo, client và server thực hiện bắt tay 3 bước TCP (SYN packet 1 $\to$ SYN-ACK packet 2 $\to$ ACK packet 3) để thiết lập kết nối, trao đổi các thông số như MSS và Window Size. Sau khi kết nối được thiết lập, client gửi HTTP GET request trong 1 segment duy nhất (packet 4). Server xử lý và trả về response HTTP/1.1 200 OK, dữ liệu được chia thành 25 TCP segment do vượt quá MSS, sử dụng Transfer-Encoding: chunked, và được Wireshark ghép lại đầy đủ tại packet 53. Cuối cùng, vì request có \texttt{Connection: close}, server chủ động đóng kết nối bằng cách gửi FIN kèm dữ liệu cuối (packet 53), client phản hồi FIN, ACK (packet 55), hoàn tất chu trình đóng kết nối 4 bước.}
 
 \end{document}
